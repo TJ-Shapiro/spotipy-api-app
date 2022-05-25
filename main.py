@@ -6,7 +6,7 @@ import config as config
 import urllib.request
 from functions import(
     get_user_playlists,
-    most_pop_playlist
+    most_poppin_playlist
 )
 
 #defines scope of what program can access in spotify API and gets authentication token
@@ -15,10 +15,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=config.client_ID, clien
 
 def main():
     playlists = get_user_playlists(sp)
-    for idx, item in enumerate(playlists['items']):
-        img = item['images'][0]['url']
-        urllib.request.urlretrieve(img, str(idx) + "yup.jpg")
-    
+    most_poppin_playlist(sp)
 
 if __name__ == '__main__':
     main()
