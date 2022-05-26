@@ -6,16 +6,20 @@ import config as config
 import urllib.request
 from functions import(
     get_user_playlists,
-    most_poppin_playlist
+    most_poppin_playlist,
+    getTrackKey
 )
 
 #defines scope of what program can access in spotify API and gets authentication token
-scope = ["playlist-modify-public", "playlist-modify-private", "playlist-read-private", "user-library-modify"]
+scope = ["playlist-modify-public", "playlist-modify-private", "playlist-read-private", "user-library-modify", "user-read-currently-playing"]
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=config.client_ID, client_secret= config.client_SECRET, redirect_uri=config.redirect_url, scope=scope))
 
 def main():
-    playlists = get_user_playlists(sp)
-    most_poppin_playlist(sp)
+    #Gets currently playing song's key info
+    currTrackID = sp.current_user_playing_track()['item']['id']
+    currTrackName = sp.current_user_playing_track()['item']['name']
+    currKey, mode = getTrackKey(sp, currTrackID)
+    print(currTrackName + " is in the key of " + currKey + " " + mode + ".")
 
 if __name__ == '__main__':
     main()
