@@ -6,6 +6,7 @@ import config as config
 import urllib.request
 from functions import(
     get_user_playlists,
+    getNextTracks,
     most_poppin_playlist,
     getTrackKey
 )
@@ -16,10 +17,15 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=config.client_ID, clien
 
 def main():
     #Gets currently playing song's key info
+    # try:
     currTrackID = sp.current_user_playing_track()['item']['id']
     currTrackName = sp.current_user_playing_track()['item']['name']
-    currKey, mode = getTrackKey(sp, currTrackID)
+    currKey, mode = getTrackKey(currTrackID)
     print(currTrackName + " is in the key of " + currKey + " " + mode + ".")
+    # except TypeError:
+    #     print("Error: No song currently playing.")
+    #     return 1
+    getNextTracks(currTrackID)
 
 if __name__ == '__main__':
     main()
